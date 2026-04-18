@@ -1,6 +1,3 @@
-
-
-
 function calcularComision(numeroVentas, PrecioProducto){
     const VENTAS_BASE = 5;
     let comision = 0;
@@ -12,24 +9,28 @@ function calcularComision(numeroVentas, PrecioProducto){
     return comision;
 }
 
-function mostrarEnSpan(id, valor){
-    document.getElementById(id).innerText = valor.toFixed(2);
-}
-
 function Calcular(){
-    let salarioBase = parseFloat(document.getElementById("txtSueldoBase").value);    
-    let ventas = parseFloat(document.getElementById("txtVentas").value);    
-    let precio = parseFloat(document.getElementById("txtPrecio").value);  
-    
+
+    let salarioBase = recuperarNumero("txtSueldoBase", "errorSueldo", "Salario Base");
+    let ventas = recuperarNumero("txtVentas", "errorVentas", "Número de ventas");
+    let precio = recuperarNumero("txtPrecio", "errorPrecio", "Precio del producto");
+
+    // Si alguno falla, se detiene
+    if(salarioBase === null || ventas === null || precio === null){
+        return;
+    }
+
+    if(ventas === 0){
+        mostrarError("txtVentas", "errorVentas", "Debe ingresar al menos 1 venta");
+        return;
+    }
 
     let comision = calcularComision(ventas, precio);
-
     let total = salarioBase + comision;
 
     mostrarEnSpan("spSueldoBase", salarioBase);
     mostrarEnSpan("spComision", comision);
     mostrarEnSpan("spTotal", total);
-    
 }
 
 document.getElementById("calcular").onclick = () => Calcular();
